@@ -9,4 +9,4 @@ def get_lessons_list(self):
 def get_lesson_detail(self):
     return get_object_or_404(Lesson,
                              course__pk=self.kwargs['pk'],
-                             id=self.kwargs['lesson_pk'])
+                             pk=self.kwargs['lesson_pk'])
