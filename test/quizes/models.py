@@ -14,10 +14,10 @@ class Quiz(models.Model):
 
 class Question(models.Model):
     description = models.CharField(max_length=255)
-    quiz = models.ForeignKey(Quiz)
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
     _has_right = models.BooleanField()
     is_multianswered = models.BooleanField()
-    points_price = model.IntegerField()
+    points_price = models.IntegerField()
 
     def __str__(self):
         return self.description
@@ -25,7 +25,7 @@ class Question(models.Model):
 
 class AnswerOption(models.Model):
     description = models.CharField(max_length=255)
-    question = models.ForeignKey(Question)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
     is_right = models.BooleanField()
 
     def __str__(self):
@@ -34,7 +34,7 @@ class AnswerOption(models.Model):
 
 class UserQuiz(models.Model):
     result = models.IntegerField()
-    quiz = models.ForeignKey(Quiz)
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
