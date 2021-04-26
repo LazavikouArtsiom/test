@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.core.validators import MaxValueValidator, MinValueValidator 
 
 from courses.models import Lesson
 
@@ -21,11 +22,9 @@ class HomeworkAnswerFile(models.Model):
 class Homework(models.Model):
     lesson = models.ForeignKey(Lesson, on_delete=models.SET_NULL, null=True)
     title = models.CharField(max_length=100)
-    description = models.TextField()
-    additional_files = models.ForeignKey(
+    description = models.TextField(null=True, blank=True)
+    additional_files = models.ManyToManyField(
         HomeworkFile,
-        on_delete=models.SET_NULL,
-        null=True,
     )
 
     def __str__(self):
@@ -38,10 +37,8 @@ class HomeworkAnswer(models.Model):
         on_delete=models.CASCADE,
     )
     homework = models.ForeignKey(Homework, on_delete=models.SET_NULL, null=True)
-    homework_answer_file = models.ForeignKey(
+    homework_answer_file = models.ManyToManyField(
         HomeworkAnswerFile,
-        on_delete=models.CASCADE,
-        null=True,
     )
 
     def __str__(self):
@@ -49,7 +46,7 @@ class HomeworkAnswer(models.Model):
 
 
 class HomeworkReview(models.Model):
-    score = models.IntegerField()
+    score = models.PositiveIntegerField(default=1, validators=[MinValueValidator(1), MaxValueValidator(5)])
     review_text = models.TextField()
     homework_answer = models.ForeignKey(HomeworkAnswer, on_delete=models.CASCADE)
 

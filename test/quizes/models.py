@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 from courses.models import Course
 
@@ -11,8 +12,12 @@ class Quiz(models.Model):
     def __str__(self):
         return self.title
 
+    class Meta:
+        verbose_name_plural = 'quizes'
+
 
 class Question(models.Model):
+    title = models.CharField(max_length=255)
     description = models.CharField(max_length=255)
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
     _has_right = models.BooleanField()
@@ -33,7 +38,12 @@ class AnswerOption(models.Model):
 
 
 class UserQuiz(models.Model):
-    result = models.IntegerField()
+    result = models.PositiveIntegerField(
+        default=1,
+        validators=[MinValueValidator(0),
+                    MaxValueValidator(100)],
+        blank=True,
+        null=True)
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -45,4 +55,7 @@ class UserQuiz(models.Model):
 
 
 class UserQuizQuestionAnswer(models.Model):
-    pass
+    user_quiz = models.ForeignKey(UserQuiz, on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    answer = models.ForeignKey(AnswerOption, on_delete=models.CASCADE)
+
