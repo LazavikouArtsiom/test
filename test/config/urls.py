@@ -8,5 +8,4 @@ urlpatterns = [
     path('courses/', include('quizes.api.urls')),
     path('', include('courses.api.urls')),
 
-
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
