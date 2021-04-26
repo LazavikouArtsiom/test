@@ -29,7 +29,7 @@ class Homework(models.Model):
 
     class Meta:
         unique_together = ['title', 'description',
-                           'lesson', 'additional_files']
+                           'lesson', ]
 
     def __str__(self):
         return self.title
@@ -56,12 +56,9 @@ class HomeworkAnswer(models.Model):
 class HomeworkReview(models.Model):
     score = models.PositiveIntegerField(
         default=1, validators=[MinValueValidator(1), MaxValueValidator(5)])
-    review_text = models.TextField()
+    review_text = models.TextField(unique=True)
     homework_answer = models.ForeignKey(
         HomeworkAnswer, on_delete=models.CASCADE)
-
-    class Meta:
-        unique_together = ['homework_answer', 'review_text']
 
     def __str__(self):
         return f'homework answer {self.homework_answer.id} score {self.score}'

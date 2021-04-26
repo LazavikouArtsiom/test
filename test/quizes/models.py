@@ -6,13 +6,12 @@ from courses.models import Course
 
 
 class Quiz(models.Model):
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=100, unique=True)
     course = models.ManyToManyField(Course)
     is_daily = models.BooleanField(default=False)
 
     class Meta:
         verbose_name_plural = 'quizes'
-        unique_together = ['title', 'course']
 
     def __str__(self):
         return self.title
