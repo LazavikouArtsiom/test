@@ -8,6 +8,7 @@ from courses.models import Course
 class Quiz(models.Model):
     title = models.CharField(max_length=100)
     course = models.ManyToManyField(Course)
+    is_daily = models.BooleanField(default=False)
 
     def __str__(self):
         return self.title
@@ -21,7 +22,7 @@ class Question(models.Model):
     description = models.CharField(max_length=255)
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
     _has_right = models.BooleanField()
-    is_multianswered = models.BooleanField()
+    is_multianswered = models.BooleanField(default=False)
     points_price = models.IntegerField()
 
     def __str__(self):
@@ -58,4 +59,3 @@ class UserQuizQuestionAnswer(models.Model):
     user_quiz = models.ForeignKey(UserQuiz, on_delete=models.CASCADE)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     answer = models.ForeignKey(AnswerOption, on_delete=models.CASCADE)
-

@@ -13,4 +13,3 @@ urlpatterns = [
          LessonRetrieveUpdateDestroyAPIView.as_view()),
 ] + router.urls
 
-print(router.urls)
