@@ -3,8 +3,8 @@ from rest_framework.generics import (
     RetrieveUpdateDestroyAPIView,
 )
 
-from .serializers import QuestionSerializer
-from quizes.models import Question
+from .serializers import QuestionSerializer, AnswerOptionSerializer
+from quizes.models import Question, AnswerOption
 
 
 class QuestionsListCreateAPIView(ListCreateAPIView):
@@ -21,3 +21,11 @@ class QuestionRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
 
     def get_queryset(self):
         return Question.objects.first()
+
+
+class AnswerOptionsListCreateAPIView(ListCreateAPIView):
+
+    serializer_class = AnswerOptionSerializer
+
+    def get_queryset(self):
+        return AnswerOption.objects.first()
