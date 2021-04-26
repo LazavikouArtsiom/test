@@ -6,14 +6,11 @@ from .viewsets import QuizViewSet
 router = routers.SimpleRouter()
 router.register(r'quizes', QuizViewSet)
 
-# from .views import LessonListCreateAPIView, LessonRetrieveUpdateDestroyAPIView
+from .views import QuestionsListCreateAPIView, QuestionRetrieveUpdateDestroyAPIView
 
 urlpatterns = [
-#     path('', Quizes list,
-#     path('<int:pk>/', Quiz detail
-#     path('<int:pk>/questions/', questions list
-#     path('<int:pk>/questions/<int:question_id>', question detail
-#     path('<int:pk>/questions/<int:question_id/answer_options/', answerOptions list
+    path('<int:course_id>/quizes/<int:pk>/questions/', QuestionsListCreateAPIView.as_view()),
+    path('<int:course_id>/quizes/<int:pk>/questions/<int:question_id>/', QuestionRetrieveUpdateDestroyAPIView.as_view())
+#     path('quizes/<int:pk>/questions/<int:question_id/answer_options/', answerOptions list
 ] + router.urls
 
-print(router.urls)
