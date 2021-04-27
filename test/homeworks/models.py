@@ -4,20 +4,19 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 
 from courses.models import Lesson
 
+# class HomeworkFile(models.Model):
+#     homework_file = models.FileField(unique=True)
 
-class HomeworkFile(models.Model):
-    homework_file = models.FileField(upload_to=r'test\media\files',
-                                     unique=True)
-
-    def __str__(self):
-        return f'homework file {self.id}'
+#     def __str__(self):
+#         return f'homework file {self.id}'
 
 
 class Homework(models.Model):
     lesson = models.ForeignKey(Lesson, on_delete=models.SET_NULL, null=True)
     title = models.CharField(max_length=100)
     description = models.TextField(null=True, blank=True)
-    additional_files = models.ManyToManyField(HomeworkFile, )
+
+    # homework_files = models.ForeignKey(HomeworkFile, on_delete=models.CASCADE, null=True)
 
     class Meta:
         unique_together = [
@@ -31,14 +30,23 @@ class Homework(models.Model):
 
 
 class HomeworkAnswer(models.Model):
+    STATUSES = (
+        ("new", "New order"),
+        ("waiting for review", "waiting for review"),
+        ("reviewed", "reviewed"),
+    )
+
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
     )
-    homework = models.ForeignKey(Homework,
-                                 on_delete=models.SET_NULL,
-                                 null=True)
+    homework = models.OneToOneField(
+        Homework,
+        on_delete=models.CASCADE,
+    )
     text = models.TextField()
+
+    status = models.CharField(max_length=20, choices=STATUSES, default="new")
 
     class Meta:
         unique_together = ['user', 'homework']
@@ -52,8 +60,9 @@ class HomeworkReview(models.Model):
         default=1, validators=[MinValueValidator(1),
                                MaxValueValidator(5)])
     review_text = models.TextField(unique=True)
-    homework_answer = models.ForeignKey(HomeworkAnswer,
-                                        on_delete=models.CASCADE)
+    homework_answer = models.OneToOneField(HomeworkAnswer,
+                                           on_delete=models.CASCADE,
+                                           unique=True)
 
     def __str__(self):
         return f'homework answer {self.homework_answer.id} score {self.score}'
