@@ -5,15 +5,7 @@ from rest_framework import serializers
 from homeworks.models import Homework, HomeworkAnswer, HomeworkReview
 
 
-# class HomeworkFileSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = HomeworkFile
-#         fields = ["homework_file"]
-
-
 class HomeworkSerializer(serializers.ModelSerializer):
-    # homework_files = HomeworkFileSerializer(read_only=True)
-
     class Meta:
         model = Homework
         fields = ["id", "lesson", "title", "description"]
@@ -28,7 +20,8 @@ class HomeworkAnswerSerializer(serializers.ModelSerializer):
 
 
 class HomeworkReviewSerializer(serializers.ModelSerializer):
-
+    homework_answer = HomeworkAnswerSerializer(read_only=True)
+    
     class Meta:
         model = HomeworkReview
         fields = ["id", "score", "review_text", "homework_answer"]

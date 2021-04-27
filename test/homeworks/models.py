@@ -4,19 +4,11 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 
 from courses.models import Lesson
 
-# class HomeworkFile(models.Model):
-#     homework_file = models.FileField(unique=True)
-
-#     def __str__(self):
-#         return f'homework file {self.id}'
-
 
 class Homework(models.Model):
     lesson = models.ForeignKey(Lesson, on_delete=models.SET_NULL, null=True)
     title = models.CharField(max_length=100)
     description = models.TextField(null=True, blank=True)
-
-    # homework_files = models.ForeignKey(HomeworkFile, on_delete=models.CASCADE, null=True)
 
     class Meta:
         unique_together = [

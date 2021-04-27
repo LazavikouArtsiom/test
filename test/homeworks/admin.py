@@ -3,5 +3,4 @@ from .models import (Homework, HomeworkAnswer, HomeworkReview)
 
 admin.site.register(Homework)
 admin.site.register(HomeworkAnswer)
-# admin.site.register(HomeworkFile)
 admin.site.register(HomeworkReview)
