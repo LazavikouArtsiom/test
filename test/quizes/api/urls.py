@@ -1,19 +1,23 @@
 from django.urls import path, include
-from rest_framework import routers
+from rest_framework_nested import routers
 
-from .viewsets import QuizViewSet
+from .viewsets import QuizViewSet, QuestionViewSet, AnswerOptionViewSet
+from courses.api.viewsets import CourseViewSet
 
-router = routers.SimpleRouter()
-router.register(r'quizes', QuizViewSet)
+course_router = routers.SimpleRouter()
+course_router.register(r'courses', CourseViewSet)
 
-from .views import QuestionsListCreateAPIView, QuestionRetrieveUpdateDestroyAPIView, AnswerOptionsListCreateAPIView
+router = routers.NestedSimpleRouter(course_router, r'courses', lookup='courses')
+router.register(r'quizes', QuizViewSet, basename='courses-quizes')
+
+question_router = routers.NestedSimpleRouter(router, r'quizes', lookup='quizes')
+question_router.register(r'questions', QuestionViewSet, basename='quizes-questions')
+
+answer_option_router = routers.NestedSimpleRouter(question_router, r'questions', lookup='questions')
+answer_option_router.register(r'answer_options', AnswerOptionViewSet, basename='questions-answeroptions')
 
 urlpatterns = [
-    path('<int:course_id>/quizes/<int:pk>/questions/',
-         QuestionsListCreateAPIView.as_view()),
-    path('<int:course_id>/quizes/<int:pk>/questions/<int:question_id>/',
-         QuestionRetrieveUpdateDestroyAPIView.as_view()),
-    path(
-        '<int:course_id>/quizes/<int:pk>/questions/<int:question_id/answer_options/',
-        AnswerOptionsListCreateAPIView.as_view()),
-] + router.urls
+     path('', include(router.urls)),
+     path('', include(question_router.urls)),
+     path('', include(answer_option_router.urls)),
+]
