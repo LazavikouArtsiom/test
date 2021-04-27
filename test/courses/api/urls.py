@@ -3,7 +3,6 @@ from django.conf.urls import url
 from rest_framework_nested import routers
 
 from .viewsets import CourseViewSet, LessonViewSet
-from .views import LessonListCreateAPIView, LessonRetrieveUpdateDestroyAPIView
 
 router = routers.SimpleRouter()
 router.register(r'courses', CourseViewSet)
