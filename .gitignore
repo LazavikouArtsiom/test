@@ -9,7 +9,6 @@ __pycache__/
 
 # Distribution / packaging
 .Python
-migrations/
 build/
 develop-eggs/
 dist/
@@ -129,3 +128,6 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+migrations/
+media/
