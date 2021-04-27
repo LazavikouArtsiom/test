@@ -7,5 +7,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('quizes.api.urls')),
     path('', include('courses.api.urls')),
-
+    path('', include('homeworks.api.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
