@@ -23,4 +23,4 @@ class IsSubscribedOrIsAdmin(BasePermission):
             'pk') or request.parser_context['kwargs'].get('courses_pk')
         course = Course.objects.get(pk=course_id)
         return (course in request.user.courses.all()) or bool(
-            request.user and request.user.is_staff)
+                request.user and request.user.is_staff)
