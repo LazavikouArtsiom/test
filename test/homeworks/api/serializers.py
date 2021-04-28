@@ -12,7 +12,6 @@ class HomeworkSerializer(serializers.ModelSerializer):
 
 
 class HomeworkAnswerSerializer(serializers.ModelSerializer):
-    homework = HomeworkSerializer(read_only=True)
 
     class Meta:
         model = HomeworkAnswer
@@ -20,7 +19,6 @@ class HomeworkAnswerSerializer(serializers.ModelSerializer):
 
 
 class HomeworkReviewSerializer(serializers.ModelSerializer):
-    homework_answer = HomeworkAnswerSerializer(read_only=True)
     
     class Meta:
         model = HomeworkReview
