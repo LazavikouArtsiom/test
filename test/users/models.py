@@ -38,7 +38,7 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
     nickname = models.CharField(
-        verbose_name='first name', max_length=30, blank=True, unique=True)
+        verbose_name='username', max_length=30, blank=True, unique=True)
     email = models.EmailField(
         verbose_name='email address', blank=True, unique=True)
     is_staff = models.BooleanField(
