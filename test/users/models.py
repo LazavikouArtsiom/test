@@ -1,9 +1,7 @@
 from django.db import models
 from django.utils import timezone
-from django.contrib.auth.models import (
-    BaseUserManager, AbstractBaseUser,
-    PermissionsMixin
-)
+from django.contrib.auth.models import (BaseUserManager, AbstractBaseUser,
+                                        PermissionsMixin)
 from courses.models import Course
 
 
@@ -37,25 +35,28 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-    nickname = models.CharField(
-        verbose_name='username', max_length=30, blank=True, unique=True)
-    email = models.EmailField(
-        verbose_name='email address', blank=True, unique=True)
+    nickname = models.CharField(verbose_name='username',
+                                max_length=30,
+                                unique=True,
+                                )
+    email = models.EmailField(verbose_name='email address',
+                              unique=True)
     is_staff = models.BooleanField(
         verbose_name='staff status',
-        default=False, )
+        default=False,
+    )
     is_active = models.BooleanField(
         verbose_name='active',
-        default=True, )
-    date_joined = models.DateTimeField(
-        verbose_name='date joined', default=timezone.now)
-    
-    courses = models.ManyToManyField(Course,)
+        default=True,
+    )
+    date_joined = models.DateTimeField(verbose_name='date joined',
+                                       default=timezone.now)
+
+    courses = models.ManyToManyField(Course, blank=True)
 
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['nickname']
 
     def __str__(self):
         return self.email
