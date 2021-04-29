@@ -7,25 +7,31 @@ from .serializers import (HomeworkSerializer, HomeworkAnswerSerializer,
                           HomeworkReviewSerializer)
 from utils.permissions import IsSubscribed, IsSubscribedOrIsAdmin
 from homeworks.utils.permissions import IsHomeworkAnswerOwner
+from homeworks.selectors import (
+    get_homework_answers_list,
+    get_homework_answers_detail,
+    get_homework_review_detail,
+    get_homeworks_list,
+    
+)
 
 
 class HomeworkViewSet(viewsets.ModelViewSet):
     serializer_class = HomeworkSerializer
-    queryset = Homework.objects.all()
     permission_classes = [IsAuthenticated, IsSubscribedOrIsAdmin]
 
+    def get_queryset(self):
+        return get_homeworks_list(self, request)
 
 class HomeworkAnswerViewSet(viewsets.ModelViewSet):
     serializer_class = HomeworkAnswerSerializer
     permission_classes = [IsAuthenticated, IsSubscribedOrIsAdmin]
 
     def get_queryset(self):
-        homework_id = self.request.parser_context['kwargs'].get('homeworks_pk')
         if IsAdminUser():
-            return HomeworkAnswer.objects.filter(homework_id=homework_id)
+            return get_homework_answers_list(self, request)
         elif IsHomeworkAnswerOwner():
-            return HomeworkAnswer.objects.filter(user=request.user).filter(
-                homework_id=homework_id)
+            return get_homework_answers_detail(self, request)
 
 
 class HomeworkReviewViewSet(viewsets.ModelViewSet):
@@ -33,7 +39,4 @@ class HomeworkReviewViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAdminUser, IsHomeworkAnswerOwner]
 
     def get_queryset(self):
-        homework_answer_id = self.request.parser_context['kwargs'].get(
-            'homework_answers_pk')
-        return HomeworkReview.objects.filter(
-            homework_answer_id=homework_answer_id)
+        return get_homework_review_detail(self)
