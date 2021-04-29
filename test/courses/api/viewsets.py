@@ -6,6 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 from utils.permissions import IsSubscribed, IsSubscribedOrIsAdmin
 from courses.models import Course, Lesson
 from .serializers import CourseSerializer, LessonSerializer
+from courses.selectors import get_lessons_list, get_lesson_detail
 
 
 class CourseViewSet(viewsets.ModelViewSet):
@@ -37,6 +38,10 @@ class CourseViewSet(viewsets.ModelViewSet):
 
 class LessonViewSet(viewsets.ModelViewSet):
     serializer_class = LessonSerializer
-    queryset = Lesson.objects.all()
     permission_classes = [IsAuthenticated, IsSubscribedOrIsAdmin]
-    
+
+    def get_queryset(self):
+        if self.action in ('retrieve', 'update', 'destroy',
+                            'partial_update'):
+            return get_lesson_detail(self)
+        return get_lessons_list(self)
