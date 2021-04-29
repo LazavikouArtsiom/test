@@ -7,18 +7,24 @@ class QuizSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Quiz
-        fields = "__all__"
+        fields = ['title', 'course', 'is_daily',
+                  ]
         
         
 class QuestionSerializer(serializers.ModelSerializer):
+    quiz = QuizSerializer(read_only=True)
 
     class Meta:
         model = Question
-        fields = "__all__"
+        fields = ['title', 'description', 'quiz',
+                  'is_multianswered',
+                  ]
         
         
 class AnswerOptionSerializer(serializers.ModelSerializer):
-
+    question = QuestionSerializer(read_only=True)
+    
     class Meta:
         model = AnswerOption
-        fields = "__all__"
+        fields = ['description', 'question',
+                  ]
