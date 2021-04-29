@@ -23,7 +23,7 @@ class Homework(models.Model):
 
 class HomeworkAnswer(models.Model):
     STATUSES = (
-        ("new", "New order"),
+        ("new", "New"),
         ("waiting for review", "waiting for review"),
         ("reviewed", "reviewed"),
     )

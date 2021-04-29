@@ -23,6 +23,7 @@ class HomeworkViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return get_homeworks_list(self, request)
 
+
 class HomeworkAnswerViewSet(viewsets.ModelViewSet):
     serializer_class = HomeworkAnswerSerializer
     permission_classes = [IsAuthenticated, IsSubscribedOrIsAdmin]
